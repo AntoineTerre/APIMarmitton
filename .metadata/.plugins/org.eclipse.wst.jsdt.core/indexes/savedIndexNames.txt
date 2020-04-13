@@ -1,8 +1,0 @@
-INDEX VERSION 1.4+C:\Users\Antoine\Documents\GitHub\APIMarmitton\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
-1629939189.index
-3982148287.index
-3194350583.index
-1490552896.index
-2183083639.index
-2922414159.index
-2439845377.index
