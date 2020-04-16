@@ -1,4 +1,4 @@
-package ggrecipes.controller;
+package com.ggrecipes.controller;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
