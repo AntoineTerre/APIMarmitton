@@ -3,12 +3,21 @@ package com.ggrecipes.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 
-@Controller
+import com.ggrecipes.model.GenerateRecipes;
+
+import java.util.*;
+@RestController
 public class GreetingController {
 
-	@GetMapping("/pokemon")
+	/*@GetMapping("/pokemon")
 	public String pokemon(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
 		model.addAttribute("name", name);
 		return "pokemon";
@@ -17,6 +26,12 @@ public class GreetingController {
 	public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
 		model.addAttribute("name", name);
 		return "greeting";
+	}*/
+	@GetMapping("/test")
+	public String test() throws IOException{
+
+		String test = GenerateRecipes.Recipe("https://www.marmiton.org/recettes/recette_risotto-aux-crevettes-et-pointes-d-asperges_31554.aspx");
+		return test;
 	}
 
 }
