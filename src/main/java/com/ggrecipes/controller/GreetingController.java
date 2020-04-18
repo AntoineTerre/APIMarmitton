@@ -21,7 +21,7 @@ public class GreetingController {
 
 	@GetMapping("/test")
 	public GenerateRecipes test() throws IOException{
-		generateRecipes.Recipe("https://www.marmiton.org/recettes/recette_tarte-au-chocolat-sans-oeufs_90757.aspx");
+		generateRecipes.Recipe("https://www.marmiton.org/recettes/recette_risotto-aux-crevettes-et-pointes-d-asperges_31554.aspx");
 		return generateRecipes;
 
 	}
