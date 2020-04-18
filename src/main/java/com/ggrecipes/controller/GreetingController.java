@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -16,22 +17,13 @@ import com.ggrecipes.model.GenerateRecipes;
 import java.util.*;
 @RestController
 public class GreetingController {
+	private GenerateRecipes generateRecipes = new GenerateRecipes();
 
-	/*@GetMapping("/pokemon")
-	public String pokemon(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
-		model.addAttribute("name", name);
-		return "pokemon";
-	}
-	@GetMapping("/greeting")
-	public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
-		model.addAttribute("name", name);
-		return "greeting";
-	}*/
 	@GetMapping("/test")
-	public String test() throws IOException{
+	public GenerateRecipes test() throws IOException{
+		generateRecipes.Recipe("https://www.marmiton.org/recettes/recette_tarte-au-chocolat-sans-oeufs_90757.aspx");
+		return generateRecipes;
 
-		String test = GenerateRecipes.Recipe("https://www.marmiton.org/recettes/recette_risotto-aux-crevettes-et-pointes-d-asperges_31554.aspx");
-		return test;
 	}
 
 }
