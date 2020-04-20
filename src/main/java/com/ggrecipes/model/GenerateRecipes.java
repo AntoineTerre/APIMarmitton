@@ -36,7 +36,7 @@ public class GenerateRecipes {
     public String title;
     public String temps;
     public String personnes;
-    public String difficulté;
+    public String difficulte;
     public String cout;
     public int status = 200;
     public Map<String,Float> ingredients = new HashMap<>();
@@ -52,39 +52,39 @@ public class GenerateRecipes {
             status = page.getWebResponse().getStatusCode();
             List<HtmlElement> ingredientsHtml = page.getByXPath("//span[(@class='ingredient')]");
             List<HtmlElement> quantitéHtml = page.getByXPath("//span[contains(@class, 'recipe-ingredient-qt')]");
-            for (int i=0;i<ingredientsHtml.size();i++) {
-                try{
-                    ingredients.put(ingredientsHtml.get(i).asText(),Float.parseFloat(quantitéHtml.get(i).asText()));
-                }catch(Exception e){
-                    ingredients.put(ingredientsHtml.get(i).asText(),null);
+            for (int i = 0; i < ingredientsHtml.size(); i++) {
+                try {
+                    ingredients.put(ingredientsHtml.get(i).asText(), Float.parseFloat(quantitéHtml.get(i).asText()));
+                } catch (Exception e) {
+                    ingredients.put(ingredientsHtml.get(i).asText(), null);
                 }
-                
+
             }
             List<HtmlElement> stepsHtml = page.getByXPath("//li[contains(@class, 'recipe-preparation__list')]");
             for (HtmlElement i : stepsHtml) {
                 steps.add(i.asText());
             }
-            
-            List<HtmlElement> tempsHtml = page.getByXPath("//span[contains(@class, 'title-2 recipe-infos__total-time__value')]");
-            for (HtmlElement i : tempsHtml) {
-                temps = i.asText();
+            List<HtmlElement> tempsHtml = page
+                    .getByXPath("//span[contains(@class, 'title-2 recipe-infos__total-time__value')]");
+            temps = tempsHtml.get(0).asText();
+            List<HtmlElement> personnesHtml = page
+                    .getByXPath("//span[contains(@class, 'title-2 recipe-infos__quantity__value')]");
+            personnes = personnesHtml.get(0).asText();
+            List<HtmlElement> difficulteHtml = page.getByXPath("//div[(@class='recipe-infos__level')]");
+            try {
+                difficulte = difficulteHtml.get(0).asText();
+            } catch (Exception e) {
+                difficulte = "";
             }
-            List<HtmlElement> personnesHtml = page.getByXPath("//span[contains(@class, 'title-2 recipe-infos__quantity__value')]");
-            for (HtmlElement i : personnesHtml) {
-                personnes = i.asText();
+            List<HtmlElement> coutHtml = page.getByXPath("//div[(@class='recipe-infos__budget')]");
+            try {
+                cout = coutHtml.get(0).asText();
+            } catch (Exception e) {
+                cout = "";
             }
-            List<HtmlElement> difficultéHtml = page.getByXPath("//span[(@class= 'recipe-infos__level')]");
-            for (HtmlElement i : difficultéHtml) {
-                difficulté = i.asText();
-            } 
-            List<HtmlElement> coutHtml = page.getByXPath("//span[(@class='recipe-infos__budget')]");
-            for (HtmlElement i : coutHtml) {
-                cout = i.asText();
-            }  
             List<HtmlElement> titleHtml = page.getByXPath("//h1[(@class='main-title ')]");
-            for (HtmlElement i : titleHtml) {
-                title= i.asText();
-            } 
+            title = titleHtml.get(0).asText();
+
 
         } catch (Exception e) {
             status = 404;
