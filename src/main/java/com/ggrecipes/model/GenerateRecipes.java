@@ -114,22 +114,22 @@ public class GenerateRecipes {
    //fonction constuisant l'url de la recherche a partir de la liste d'ingredient
    //---------return null si listIngerdient is empty
    private String URLBuilder(ArrayList<String> ingredientRecette) {
-   	String ingretdientURLget="aqt=";
-   	Boolean IngerdientEmpty=false;
+   	String ingredientURLget="aqt=";
+   	Boolean IngredientEmpty=false;
    	if(ingredientRecette.isEmpty()==false) {
-   		ingretdientURLget=ingretdientURLget+ingredientRecette.get(0);
+   		ingredientURLget=ingredientURLget+ingredientRecette.get(0);
    		
    	}else {
-   		IngerdientEmpty=true;
+   		IngredientEmpty=true;
    	}
    	for(int i=1;i<ingredientRecette.size();i++) {
-   		ingretdientURLget=ingretdientURLget+"-"+ingredientRecette.get(i);
+   		ingredientURLget=ingredientURLget+"-"+ingredientRecette.get(i);
    	}
    	String typeRecette="type=all";//Cela sera a preciser , ici on a la valeur par default 
-   	if(IngerdientEmpty) {
+   	if(IngredientEmpty) {
    		return null;
    	}else {
-   		return URLMarimitton+"?"+typeRecette+"&"+ingretdientURLget;
+   		return URLMarimitton+"?"+typeRecette+"&"+ingredientURLget;
    	}
    	
    	
