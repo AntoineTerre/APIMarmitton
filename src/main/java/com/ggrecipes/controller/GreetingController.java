@@ -17,7 +17,7 @@ import com.ggrecipes.model.GenerateRecipes;
 import java.util.*;
 @RestController
 public class GreetingController {
-	private GenerateRecipes generateRecipes = new GenerateRecipes();
+	private GenerateRecipes generateRecipes = new GenerateRecipes(new ArrayList<String>());
 
 	@GetMapping("/")
 	public GenerateRecipes test() throws IOException{

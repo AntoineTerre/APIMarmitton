@@ -40,20 +40,12 @@ public class GenerateRecipes {
     public String cout;
     public int status = 200;
     public Map<String,Float> ingredients = new HashMap<>();
+    
+    private final String URLMarimitton = "https://www.marmiton.org/recettes/recherche.aspx";
 
     public void Recipe(String url) throws IOException {
 
-        WebClient webClient = new WebClient();
-        webClient.getOptions().setCssEnabled(true);
-        webClient.setCssErrorHandler(new SilentCssErrorHandler());
-        webClient.getOptions().setThrowExceptionOnFailingStatusCode(true);
-        webClient.getOptions().setThrowExceptionOnScriptError(false);
-        webClient.getOptions().setRedirectEnabled(false);
-        webClient.getOptions().setAppletEnabled(false);
-        webClient.getOptions().setJavaScriptEnabled(false);
-        webClient.getOptions().setPopupBlockerEnabled(true);
-        webClient.getOptions().setTimeout(5000);
-        webClient.getOptions().setPrintContentOnFailingStatusCode(false);
+    	WebClient webClient=webClientCreator();
 
         try {
             HtmlPage page = (HtmlPage) webClient.getPage(url);
@@ -97,6 +89,7 @@ public class GenerateRecipes {
         } catch (Exception e) {
             status = 404;
         }
+      //protection for memory leak
         webClient.close();
     }
 
@@ -110,8 +103,49 @@ public class GenerateRecipes {
         this.cout = cout;
     }
 
-    public GenerateRecipes() {
-
-    }
-
+    public GenerateRecipes(ArrayList<String> ingredientRecette) {
+   	 String urlMarmittonRecherche=URLBuilder(ingredientRecette);
+   	 String start="&start=";
+   	 String page ="&page=";
+   	 
+   	
+   }
+   
+   //fonction constuisant l'url de la recherche a partir de la liste d'ingredient
+   //---------return null si listIngerdient is empty
+   private String URLBuilder(ArrayList<String> ingredientRecette) {
+   	String ingretdientURLget="aqt=";
+   	Boolean IngerdientEmpty=false;
+   	if(ingredientRecette.isEmpty()==false) {
+   		ingretdientURLget=ingretdientURLget+ingredientRecette.get(0);
+   		
+   	}else {
+   		IngerdientEmpty=true;
+   	}
+   	for(int i=1;i<ingredientRecette.size();i++) {
+   		ingretdientURLget=ingretdientURLget+"-"+ingredientRecette.get(i);
+   	}
+   	String typeRecette="type=all";//Cela sera a preciser , ici on a la valeur par default 
+   	if(IngerdientEmpty) {
+   		return null;
+   	}else {
+   		return URLMarimitton+"?"+typeRecette+"&"+ingretdientURLget;
+   	}
+   	
+   	
+   }
+    private WebClient webClientCreator() {
+   	 WebClient webClient = new WebClient();
+        webClient.getOptions().setCssEnabled(true);
+        webClient.setCssErrorHandler(new SilentCssErrorHandler());
+        webClient.getOptions().setThrowExceptionOnFailingStatusCode(true);
+        webClient.getOptions().setThrowExceptionOnScriptError(false);
+        webClient.getOptions().setRedirectEnabled(false);
+        webClient.getOptions().setAppletEnabled(false);
+        webClient.getOptions().setJavaScriptEnabled(false);
+        webClient.getOptions().setPopupBlockerEnabled(true);
+        webClient.getOptions().setTimeout(5000);
+        webClient.getOptions().setPrintContentOnFailingStatusCode(false);
+        return webClient;
+   }
 }
