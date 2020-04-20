@@ -39,7 +39,7 @@ public class GenerateRecipes {
     public String difficulté;
     public String cout;
     public int status = 200;
-    public Map<String,Float> ingredients = new HashMap<>();
+    public Map<String,String> ingredients = new HashMap<>();
 
     public void Recipe(String url) throws IOException {
 
@@ -60,9 +60,8 @@ public class GenerateRecipes {
             status = page.getWebResponse().getStatusCode();
             List<HtmlElement> ingredientsHtml = page.getByXPath("//span[(@class='ingredient')]");
             List<HtmlElement> quantitéHtml = page.getByXPath("//span[contains(@class, 'recipe-ingredient-qt')]");
-            float poe = 2;
             for (int i=0;i<ingredientsHtml.size();i++) {
-                ingredients.put(ingredientsHtml.get(i).asText(),poe);
+                ingredients.put(ingredientsHtml.get(i).asText(),quantitéHtml.get(i).asText());
             }
             List<HtmlElement> stepsHtml = page.getByXPath("//li[contains(@class, 'recipe-preparation__list')]");
             for (HtmlElement i : stepsHtml) {
@@ -92,7 +91,7 @@ public class GenerateRecipes {
         }
     }
 
-    public GenerateRecipes(Map<String,Float> ingredients, ArrayList<String> steps, String title, String temps,String personnes,String difficulté,String cout) {
+    public GenerateRecipes(Map<String,String> ingredients, ArrayList<String> steps, String title, String temps,String personnes,String difficulté,String cout) {
         this.ingredients = ingredients;
         this.steps = steps;
         this.title = title;

@@ -19,7 +19,7 @@ import java.util.*;
 public class GreetingController {
 	private GenerateRecipes generateRecipes = new GenerateRecipes();
 
-	@GetMapping("/test")
+	@GetMapping("/")
 	public GenerateRecipes test() throws IOException{
 		generateRecipes.Recipe("https://www.marmiton.org/recettes/recette_risotto-aux-crevettes-et-pointes-d-asperges_31554.aspx");
 		return generateRecipes;
