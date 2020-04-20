@@ -99,7 +99,7 @@ public class GenerateRecipes {
         this.title = title;
         this.temps = temps;
         this.personnes = personnes;
-        this.difficulté = difficulté;
+        this.difficulte = difficulte;
         this.cout = cout;
     }
 
