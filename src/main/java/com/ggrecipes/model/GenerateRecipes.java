@@ -84,7 +84,10 @@ public class GenerateRecipes {
             for (HtmlElement i : coutHtml) {
                 cout = i.asText();
             }  
-            title = page.getTitleText();
+            List<HtmlElement> titleHtml = page.getByXPath("//h1[(@class='main-title ')]");
+            for (HtmlElement i : titleHtml) {
+                title= i.asText();
+            } 
 
         } catch (Exception e) {
             status = 404;
