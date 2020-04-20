@@ -108,6 +108,11 @@ public class GenerateRecipes {
    	 String start="&start=";
    	 String page ="&page=";
    	 
+   	WebClient webClient=webClientCreator();
+   	 
+   	
+    //protection for memory leak
+    webClient.close();
    	
    }
    
