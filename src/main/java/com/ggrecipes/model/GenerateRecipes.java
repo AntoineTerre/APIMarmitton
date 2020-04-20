@@ -108,17 +108,30 @@ public class GenerateRecipes {
    	 String start="&start=";
    	 String page ="&page=";
    	 
+   	int nbrsElementInt=0;
+   	 //----------------------Initialisation with the first page----------------------------
    	 WebClient webClient=webClientCreator();
    	 try {
    		 HtmlPage htmlMarmitton = (HtmlPage) webClient.getPage(urlMarmittonRecherche);
    		 status = htmlMarmitton.getWebResponse().getStatusCode();
+   		
+   		 List<HtmlElement> nombreElement = htmlMarmitton.getByXPath("//span[(@class='recipe-search__nb-results')]");
+   		 String nbrsElementStringResultat=nombreElement.get(0).asText();
+   		 String SEPARATEUR = " ";
+   		 String separateurTab[] = nbrsElementStringResultat.split(SEPARATEUR);
+   		 String nbrsElementString=separateurTab[0];
+   		 nbrsElementInt = Integer.parseInt(nbrsElementString);
+   		 
+   		List<HtmlElement> recipies = htmlMarmitton.getByXPath("//div[(@class='recipe-card')]");
+   		
+   		 
    		 
     } catch (Exception e) {
         status = 404;
     }
     //protection for memory leak
     webClient.close();
-   	
+    //----------------------END Initialisation with the first page----------------------------
    }
    
    //fonction constuisant l'url de la recherche a partir de la liste d'ingredient
