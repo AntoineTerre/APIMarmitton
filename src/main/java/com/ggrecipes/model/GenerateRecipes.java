@@ -108,9 +108,14 @@ public class GenerateRecipes {
    	 String start="&start=";
    	 String page ="&page=";
    	 
-   	WebClient webClient=webClientCreator();
-   	 
-   	
+   	 WebClient webClient=webClientCreator();
+   	 try {
+   		 HtmlPage htmlMarmitton = (HtmlPage) webClient.getPage(urlMarmittonRecherche);
+   		 status = htmlMarmitton.getWebResponse().getStatusCode();
+   		 
+    } catch (Exception e) {
+        status = 404;
+    }
     //protection for memory leak
     webClient.close();
    	
