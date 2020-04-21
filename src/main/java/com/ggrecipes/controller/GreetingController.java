@@ -23,6 +23,7 @@ public class GreetingController {
 	@GetMapping("/")
 	public GenerateRecipes test() throws IOException{
 		ArrayList<String> ingrList=new ArrayList<String>();
+		ingrList.add("oeuf");
 		generateRecipes= new GenerateRecipes(ingrList);
 		generateRecipes.Recipe("https://www.marmiton.org/recettes/recette_risotto-aux-crevettes-et-pointes-d-asperges_31554.aspx");
 		return generateRecipes;
