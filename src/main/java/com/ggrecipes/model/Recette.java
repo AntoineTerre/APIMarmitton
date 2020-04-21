@@ -10,6 +10,8 @@ public class Recette {
 	public ArrayList<String> tags;
 	public ArrayList<String> nb_comments;
 	public String cook_time;
+	
+	public Boolean RecetteComplette=false;
 
 	public Recette(String ingredients,ArrayList<String> steps,String name,ArrayList<String> tags,ArrayList<String> nb_comments,String cook_time) {
 		this.ingredients=ingredients;
