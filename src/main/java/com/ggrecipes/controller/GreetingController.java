@@ -15,12 +15,15 @@ import java.net.URL;
 import com.ggrecipes.model.GenerateRecipes;
 
 import java.util.*;
+
 @RestController
 public class GreetingController {
-	private GenerateRecipes generateRecipes = new GenerateRecipes(new ArrayList<String>());
+	private GenerateRecipes generateRecipes;
 
 	@GetMapping("/")
 	public GenerateRecipes test() throws IOException{
+		ArrayList<String> ingrList=new ArrayList<String>();
+		generateRecipes= new GenerateRecipes(ingrList);
 		generateRecipes.Recipe("https://www.marmiton.org/recettes/recette_risotto-aux-crevettes-et-pointes-d-asperges_31554.aspx");
 		return generateRecipes;
 
