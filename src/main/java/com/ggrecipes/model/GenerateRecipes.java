@@ -159,7 +159,7 @@ public class GenerateRecipes {
     	    	
     	    	 try {
     	    		 String urlMarmittonRecherchePage=urlMarmittonRecherche+start+i*nbrsElementParPage+page+i;
-    	       		 HtmlPage htmlMarmitton = (HtmlPage) webClient.getPage(urlMarmittonRecherchePage);
+    	       		 HtmlPage htmlMarmitton = (HtmlPage) wC.getPage(urlMarmittonRecherchePage);
     	       		 status = htmlMarmitton.getWebResponse().getStatusCode();
     	       		
     	       		 
