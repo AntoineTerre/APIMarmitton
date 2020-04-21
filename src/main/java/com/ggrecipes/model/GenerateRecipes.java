@@ -167,9 +167,12 @@ public class GenerateRecipes {
     	       		 System.out.println(urlMarmittonRecherchePage);
     	       		List<HtmlElement> recipies = htmlMarmitton.getByXPath("//div[(@class='recipe-card')]");
     	       		compteurRecipiesExtract=compteurRecipiesExtract+recipies.size();
-    	       	
-    	       		System.out.println("LETEXTE= "+recipies.get(0).asText());
-    	       		System.out.println();
+    	       	for (HtmlElement y : recipies){
+                    System.out.println("LETEXTE= "+y.asText());
+                    System.out.println();
+                   }
+    	       		
+    	       		
     	       		 
     	       		 
     	        } catch (Exception e) {
