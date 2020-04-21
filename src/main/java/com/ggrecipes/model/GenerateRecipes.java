@@ -149,8 +149,8 @@ public class GenerateRecipes {
     
   //------------------------------PARSE ALL RESULT-----------------------------------
     if(boolInitialisation) {
-    	 int requestLimit=50;
-    	    for(int i=compteurRecipiesExtract;i<nbrsElementInt;i++) {
+    	 int requestLimit=5;
+    	    for(int i=1;i<nbrsElementInt;i++) {
     	    	WebClient wC=webClientCreator();
     	    	if(i>requestLimit) {
     	    		break;
