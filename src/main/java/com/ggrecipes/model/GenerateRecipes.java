@@ -114,9 +114,11 @@ public class GenerateRecipes {
    	 String start="&start=";
    	 String page ="&page=";
    	
-   	int nbrsElementParPage=15;//a verifier 
+   	int nbrsElementParPage=15;//default value
    	int nbrsElementInt=0;
    	int compteurRecipiesExtract=0;
+   	
+   	 Boolean boolInitialisation=false;
    	 //----------------------Initialisation with the first page----------------------------
    	 WebClient webClient=webClientCreator();
    	 try {
@@ -131,9 +133,10 @@ public class GenerateRecipes {
    		 nbrsElementInt = Integer.parseInt(nbrsElementString);
    		 
    		List<HtmlElement> recipies = htmlMarmitton.getByXPath("//div[(@class='recipe-card')]");
+   		nbrsElementParPage=recipies.size();
    		compteurRecipiesExtract=compteurRecipiesExtract+recipies.size();
    	
-   		
+   		boolInitialisation=true;
    		
    		 
    		 
@@ -145,37 +148,41 @@ public class GenerateRecipes {
     //----------------------END Initialisation with the first page----------------------------
     
   //------------------------------PARSE ALL RESULT-----------------------------------
-    int requestLimit=50;
-    for(int i=compteurRecipiesExtract;i<nbrsElementInt;i++) {
-    	WebClient wC=webClientCreator();
-    	if(i<requestLimit) {
-    		break;
-    	}
+    if(boolInitialisation) {
+    	 int requestLimit=50;
+    	    for(int i=compteurRecipiesExtract;i<nbrsElementInt;i++) {
+    	    	WebClient wC=webClientCreator();
+    	    	if(i<requestLimit) {
+    	    		break;
+    	    	}
+    	    	
+    	    	
+    	    	 try {
+    	    		 String urlMarmittonRecherchePage=urlMarmittonRecherche+start+i*nbrsElementParPage+page+i;
+    	       		 HtmlPage htmlMarmitton = (HtmlPage) webClient.getPage(urlMarmittonRecherchePage);
+    	       		 status = htmlMarmitton.getWebResponse().getStatusCode();
+    	       		
+    	       		 
+    	       		List<HtmlElement> recipies = htmlMarmitton.getByXPath("//div[(@class='recipe-card')]");
+    	       		compteurRecipiesExtract=compteurRecipiesExtract+recipies.size();
+    	       	
+    	       		
+    	       		
+    	       		 
+    	       		 
+    	        } catch (Exception e) {
+    	            status = 404;
+    	        }
+    	    	//protection for memory leak
+    	     	wC.close();
+    }
+   
     	
     	
-    	 try {
-    		 String urlMarmittonRecherchePage=urlMarmittonRecherche+start+i*nbrsElementParPage+page+i;
-       		 HtmlPage htmlMarmitton = (HtmlPage) webClient.getPage(urlMarmittonRecherchePage);
-       		 status = htmlMarmitton.getWebResponse().getStatusCode();
-       		
-       		 
-       		List<HtmlElement> recipies = htmlMarmitton.getByXPath("//div[(@class='recipe-card')]");
-       		compteurRecipiesExtract=compteurRecipiesExtract+recipies.size();
-       	
-       		
-       		
-       		 
-       		 
-        } catch (Exception e) {
-            status = 404;
-        }
     	
     	
     	
     	
-    	
-    	//protection for memory leak
-    	wC.close();
     }
     
   //------------------------------END PARSE ALL RESULT-----------------------------------
