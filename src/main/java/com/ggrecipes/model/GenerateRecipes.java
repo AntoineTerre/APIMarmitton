@@ -109,7 +109,7 @@ public class GenerateRecipes {
    	 String page ="&page=";
    	 
    	int nbrsElementInt=0;
-   	int compteurRecipiesExctract=0;
+   	int compteurRecipiesExtract=0;
    	 //----------------------Initialisation with the first page----------------------------
    	 WebClient webClient=webClientCreator();
    	 try {
@@ -124,7 +124,8 @@ public class GenerateRecipes {
    		 nbrsElementInt = Integer.parseInt(nbrsElementString);
    		 
    		List<HtmlElement> recipies = htmlMarmitton.getByXPath("//div[(@class='recipe-card')]");
-   		compteurRecipiesExctract=compteurRecipiesExctract+recipies.size();
+   		compteurRecipiesExtract=compteurRecipiesExtract+recipies.size();
+   	
    		
    		
    		 
@@ -135,6 +136,16 @@ public class GenerateRecipes {
     //protection for memory leak
     webClient.close();
     //----------------------END Initialisation with the first page----------------------------
+    
+  //------------------------------PARSE ALL RESULT-----------------------------------
+    int requestLimit=50;
+    for(int i=compteurRecipiesExtract;i<nbrsElementInt;i++) {
+    	if(i<requestLimit) {
+    		break;
+    	}
+    }
+    
+  //------------------------------END PARSE ALL RESULT-----------------------------------
    }
    
    //fonction constuisant l'url de la recherche a partir de la liste d'ingredient

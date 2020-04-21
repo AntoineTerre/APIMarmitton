@@ -17,7 +17,7 @@ public class Recette {
 	//bollean use to know if the recipies is completly parse
 	public Boolean RecetteComplette=false;
 
-	public Recette(ArrayList<String> ingredients,ArrayList<String> steps,String name,ArrayList<String> tags,ArrayList<String> nb_comments,String cook_time) {
+	public Recette(String MarmittonURL,ArrayList<String> ingredients,ArrayList<String> steps,String name,ArrayList<String> tags,ArrayList<String> nb_comments,String cook_time) {
 		this.ingredients=ingredients;
 		this.steps=steps;
 		this.name=name;
