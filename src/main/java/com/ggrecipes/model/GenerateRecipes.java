@@ -152,7 +152,7 @@ public class GenerateRecipes {
     	 int requestLimit=50;
     	    for(int i=compteurRecipiesExtract;i<nbrsElementInt;i++) {
     	    	WebClient wC=webClientCreator();
-    	    	if(i<requestLimit) {
+    	    	if(i>requestLimit) {
     	    		break;
     	    	}
     	    	
