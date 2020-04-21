@@ -35,9 +35,10 @@ public class GenerateRecipes {
     public List<String> steps = new ArrayList<String>();
     public String title;
     public String temps;
-    public String personnes;
+    public Float personnes;
     public String difficulte;
     public String cout;
+    public List<String> ustensiles = new ArrayList<String>();
     public int status = 200;
     public Map<String,Float> ingredients = new HashMap<>();
     
@@ -64,12 +65,16 @@ public class GenerateRecipes {
             for (HtmlElement i : stepsHtml) {
                 steps.add(i.asText());
             }
+            List<HtmlElement> ustensilesHtml = page.getByXPath("//span[contains(@class, 'recipe-utensil__name')]");
+            for (HtmlElement i : ustensilesHtml) {
+                ustensiles.add(i.asText().substring(0,i.asText().length()-2));
+            }
             List<HtmlElement> tempsHtml = page
                     .getByXPath("//span[contains(@class, 'title-2 recipe-infos__total-time__value')]");
             temps = tempsHtml.get(0).asText();
             List<HtmlElement> personnesHtml = page
                     .getByXPath("//span[contains(@class, 'title-2 recipe-infos__quantity__value')]");
-            personnes = personnesHtml.get(0).asText();
+            personnes = Float.parseFloat(personnesHtml.get(0).asText());
             List<HtmlElement> difficulteHtml = page.getByXPath("//div[(@class='recipe-infos__level')]");
             try {
                 difficulte = difficulteHtml.get(0).asText();
@@ -93,7 +98,7 @@ public class GenerateRecipes {
         webClient.close();
     }
 
-    public GenerateRecipes(Map<String,Float> ingredients, ArrayList<String> steps, String title, String temps,String personnes,String difficulté,String cout) {
+    public GenerateRecipes(Map<String,Float> ingredients, ArrayList<String> steps,ArrayList<String> ustensiles, String title, String temps,Float personnes,String difficulte,String cout) {
         this.ingredients = ingredients;
         this.steps = steps;
         this.title = title;
@@ -101,6 +106,7 @@ public class GenerateRecipes {
         this.personnes = personnes;
         this.difficulte = difficulte;
         this.cout = cout;
+        this.ustensiles = ustensiles;
     }
 
     public GenerateRecipes(ArrayList<String> ingredientRecette) {
