@@ -109,6 +109,7 @@ public class GenerateRecipes {
    	 String page ="&page=";
    	 
    	int nbrsElementInt=0;
+   	int compteurRecipiesExctract=0;
    	 //----------------------Initialisation with the first page----------------------------
    	 WebClient webClient=webClientCreator();
    	 try {
@@ -123,6 +124,7 @@ public class GenerateRecipes {
    		 nbrsElementInt = Integer.parseInt(nbrsElementString);
    		 
    		List<HtmlElement> recipies = htmlMarmitton.getByXPath("//div[(@class='recipe-card')]");
+   		compteurRecipiesExctract=compteurRecipiesExctract+recipies.size();
    		
    		
    		 
