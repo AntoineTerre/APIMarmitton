@@ -124,6 +124,7 @@ public class GenerateRecipes {
    		 
    		List<HtmlElement> recipies = htmlMarmitton.getByXPath("//div[(@class='recipe-card')]");
    		
+   		
    		 
    		 
     } catch (Exception e) {
