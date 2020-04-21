@@ -107,7 +107,8 @@ public class GenerateRecipes {
    	 String urlMarmittonRecherche=URLBuilder(ingredientRecette);
    	 String start="&start=";
    	 String page ="&page=";
-   	 
+   	
+   	int nbrsElementParPage=15;//a verifier 
    	int nbrsElementInt=0;
    	int compteurRecipiesExtract=0;
    	 //----------------------Initialisation with the first page----------------------------
@@ -140,9 +141,35 @@ public class GenerateRecipes {
   //------------------------------PARSE ALL RESULT-----------------------------------
     int requestLimit=50;
     for(int i=compteurRecipiesExtract;i<nbrsElementInt;i++) {
+    	WebClient wC=webClientCreator();
     	if(i<requestLimit) {
     		break;
     	}
+    	
+    	
+    	 try {
+    		 String urlMarmittonRecherchePage=urlMarmittonRecherche+start+i*nbrsElementParPage+page+i;
+       		 HtmlPage htmlMarmitton = (HtmlPage) webClient.getPage(urlMarmittonRecherchePage);
+       		 status = htmlMarmitton.getWebResponse().getStatusCode();
+       		
+       		 
+       		List<HtmlElement> recipies = htmlMarmitton.getByXPath("//div[(@class='recipe-card')]");
+       		compteurRecipiesExtract=compteurRecipiesExtract+recipies.size();
+       	
+       		
+       		
+       		 
+       		 
+        } catch (Exception e) {
+            status = 404;
+        }
+    	
+    	
+    	
+    	
+    	
+    	//protection for memory leak
+    	wC.close();
     }
     
   //------------------------------END PARSE ALL RESULT-----------------------------------
