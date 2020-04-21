@@ -23,6 +23,8 @@ import com.gargoylesoftware.htmlunit.StringWebResponse;
 import org.apache.commons.io.FileUtils;
 //import org.junit.Before;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -162,12 +164,12 @@ public class GenerateRecipes {
     	       		 HtmlPage htmlMarmitton = (HtmlPage) wC.getPage(urlMarmittonRecherchePage);
     	       		 status = htmlMarmitton.getWebResponse().getStatusCode();
     	       		
-    	       		 
+    	       		 System.out.println(urlMarmittonRecherchePage);
     	       		List<HtmlElement> recipies = htmlMarmitton.getByXPath("//div[(@class='recipe-card')]");
     	       		compteurRecipiesExtract=compteurRecipiesExtract+recipies.size();
     	       	
-    	       		
-    	       		
+    	       		System.out.println("LETEXTE= "+recipies.get(0).asText());
+    	       		System.out.println();
     	       		 
     	       		 
     	        } catch (Exception e) {
@@ -202,11 +204,11 @@ public class GenerateRecipes {
    	for(int i=1;i<ingredientRecette.size();i++) {
    		ingredientURLget=ingredientURLget+"-"+ingredientRecette.get(i);
    	}
-   	String typeRecette="type=all";//Cela sera a preciser , ici on a la valeur par default 
+   //	String typeRecette="type=all";//Cela sera a preciser , ici on a la valeur par default 
    	if(IngredientEmpty) {
    		return null;
    	}else {
-   		return URLMarimitton+"?"+typeRecette+"&"+ingredientURLget;
+   		return URLMarimitton+"?"+ingredientURLget;
    	}
    	
    	
