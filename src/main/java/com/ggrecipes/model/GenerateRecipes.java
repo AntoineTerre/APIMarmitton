@@ -33,7 +33,7 @@ import java.io.*;
 //import static org.junit.Assert.assertNotNull;
 
 public class GenerateRecipes {
-    //public List<String> ingredients = new ArrayList<String>();
+    // public List<String> ingredients = new ArrayList<String>();
     public List<String> steps = new ArrayList<String>();
     public String title;
     public String temps;
@@ -42,13 +42,13 @@ public class GenerateRecipes {
     public String cout;
     public List<String> ustensiles = new ArrayList<String>();
     public int status = 200;
-    public Map<String,Float> ingredients = new HashMap<>();
-    
+    public Map<String, Float> ingredients = new HashMap<>();
+
     private final String URLMarimitton = "https://www.marmiton.org/recettes/recherche.aspx";
 
     public void Recipe(String url) throws IOException {
 
-    	WebClient webClient=webClientCreator();
+        WebClient webClient = webClientCreator();
 
         try {
             HtmlPage page = (HtmlPage) webClient.getPage(url);
@@ -69,7 +69,7 @@ public class GenerateRecipes {
             }
             List<HtmlElement> ustensilesHtml = page.getByXPath("//span[contains(@class, 'recipe-utensil__name')]");
             for (HtmlElement i : ustensilesHtml) {
-                ustensiles.add(i.asText().substring(0,i.asText().length()-2));
+                ustensiles.add(i.asText().substring(0, i.asText().length() - 2));
             }
             List<HtmlElement> tempsHtml = page
                     .getByXPath("//span[contains(@class, 'title-2 recipe-infos__total-time__value')]");
@@ -92,15 +92,15 @@ public class GenerateRecipes {
             List<HtmlElement> titleHtml = page.getByXPath("//h1[(@class='main-title ')]");
             title = titleHtml.get(0).asText();
 
-
         } catch (Exception e) {
             status = 404;
         }
-      //protection for memory leak
+        // protection for memory leak
         webClient.close();
     }
 
-    public GenerateRecipes(Map<String,Float> ingredients, ArrayList<String> steps,ArrayList<String> ustensiles, String title, String temps,Float personnes,String difficulte,String cout) {
+    public GenerateRecipes(Map<String, Float> ingredients, ArrayList<String> steps, ArrayList<String> ustensiles,
+            String title, String temps, Float personnes, String difficulte, String cout) {
         this.ingredients = ingredients;
         this.steps = steps;
         this.title = title;
@@ -112,112 +112,113 @@ public class GenerateRecipes {
     }
 
     public GenerateRecipes(ArrayList<String> ingredientRecette) {
-   	 String urlMarmittonRecherche=URLBuilder(ingredientRecette);
-   	 String start="&start=";
-   	 String page ="&page=";
-   	
-   	int nbrsElementParPage=15;//default value
-   	int nbrsElementInt=0;
-   	int compteurRecipiesExtract=0;
-   	
-   	 Boolean boolInitialisation=false;
-   	 //----------------------Initialisation with the first page----------------------------
-   	 WebClient webClient=webClientCreator();
-   	 try {
-   		 HtmlPage htmlMarmitton = (HtmlPage) webClient.getPage(urlMarmittonRecherche);
-   		 status = htmlMarmitton.getWebResponse().getStatusCode();
-   		
-   		 List<HtmlElement> nombreElement = htmlMarmitton.getByXPath("//span[(@class='recipe-search__nb-results')]");
-   		 String nbrsElementStringResultat=nombreElement.get(0).asText();
-   		 String SEPARATEUR = " ";
-   		 String separateurTab[] = nbrsElementStringResultat.split(SEPARATEUR);
-   		 String nbrsElementString=separateurTab[0];
-   		 nbrsElementInt = Integer.parseInt(nbrsElementString);
-   		 
-   		List<HtmlElement> recipies = htmlMarmitton.getByXPath("//div[(@class='recipe-card')]");
-   		nbrsElementParPage=recipies.size();
-   		compteurRecipiesExtract=compteurRecipiesExtract+recipies.size();
-   	
-   		boolInitialisation=true;
-   		
-   		 
-   		 
-    } catch (Exception e) {
-        status = 404;
+        String urlMarmittonRecherche = URLBuilder(ingredientRecette);
+        String start = "&start=";
+        String page = "&page=";
+
+        int nbrsElementParPage = 15;// default value
+        int nbrsElementInt = 0;
+        int compteurRecipiesExtract = 0;
+
+        Boolean boolInitialisation = false;
+        // ----------------------Initialisation with the first
+        // page----------------------------
+        WebClient webClient = webClientCreator();
+        try {
+            HtmlPage htmlMarmitton = (HtmlPage) webClient.getPage(urlMarmittonRecherche);
+            status = htmlMarmitton.getWebResponse().getStatusCode();
+
+            List<HtmlElement> nombreElement = htmlMarmitton.getByXPath("//span[(@class='recipe-search__nb-results')]");
+            String nbrsElementStringResultat = nombreElement.get(0).asText();
+            String SEPARATEUR = " ";
+            String separateurTab[] = nbrsElementStringResultat.split(SEPARATEUR);
+            String nbrsElementString = separateurTab[0];
+            nbrsElementInt = Integer.parseInt(nbrsElementString);
+
+            List<HtmlElement> recipies = htmlMarmitton.getByXPath("//div[(@class='recipe-card')]");
+            nbrsElementParPage = recipies.size();
+            compteurRecipiesExtract = compteurRecipiesExtract + recipies.size();
+
+            boolInitialisation = true;
+
+        } catch (Exception e) {
+            status = 404;
+        }
+        // protection for memory leak
+        webClient.close();
+        // ----------------------END Initialisation with the first
+        // page----------------------------
+
+        // ------------------------------PARSE ALL
+        // RESULT-----------------------------------
+        if (boolInitialisation) {
+            int requestLimit = 5;
+            for (int i = 1; i < nbrsElementInt; i++) {
+                WebClient wC = webClientCreator();
+                if (i > requestLimit) {
+                    break;
+                }
+
+                try {
+                    String urlMarmittonRecherchePage = urlMarmittonRecherche + start + i * nbrsElementParPage + page
+                            + i;
+                    HtmlPage htmlMarmitton = (HtmlPage) wC.getPage(urlMarmittonRecherchePage);
+                    status = htmlMarmitton.getWebResponse().getStatusCode();
+
+                    System.out.println(urlMarmittonRecherchePage);
+                    List<HtmlElement> recipies = htmlMarmitton.getByXPath("//div[(@class='recipe-card')]");
+                    compteurRecipiesExtract = compteurRecipiesExtract + recipies.size();
+                    // on récupère le texte ici
+                    for (HtmlElement y : recipies) {
+                        System.out.println("LETEXTE= " + y.asText());
+                        System.out.println();
+                    }
+                    // on récupère le lien de chaque recette
+                    List<HtmlAnchor> liens = htmlMarmitton.getByXPath("//a[(@class='recipe-card-link')]");
+                    for (HtmlAnchor y : liens) {
+                        System.out.println("Lelien= " + y.getHrefAttribute());
+                        System.out.println();
+                    }
+
+                } catch (Exception e) {
+                    status = 404;
+                }
+                // protection for memory leak
+                wC.close();
+            }
+
+        }
+
+        // ------------------------------END PARSE ALL
+        // RESULT-----------------------------------
     }
-    //protection for memory leak
-    webClient.close();
-    //----------------------END Initialisation with the first page----------------------------
-    
-  //------------------------------PARSE ALL RESULT-----------------------------------
-    if(boolInitialisation) {
-    	 int requestLimit=5;
-    	    for(int i=1;i<nbrsElementInt;i++) {
-    	    	WebClient wC=webClientCreator();
-    	    	if(i>requestLimit) {
-    	    		break;
-    	    	}
-    	    	
-    	    	
-    	    	 try {
-    	    		 String urlMarmittonRecherchePage=urlMarmittonRecherche+start+i*nbrsElementParPage+page+i;
-    	       		 HtmlPage htmlMarmitton = (HtmlPage) wC.getPage(urlMarmittonRecherchePage);
-    	       		 status = htmlMarmitton.getWebResponse().getStatusCode();
-    	       		
-    	       		 System.out.println(urlMarmittonRecherchePage);
-    	       		List<HtmlElement> recipies = htmlMarmitton.getByXPath("//div[(@class='recipe-card')]");
-    	       		compteurRecipiesExtract=compteurRecipiesExtract+recipies.size();
-    	       	for (HtmlElement y : recipies){
-                    System.out.println("LETEXTE= "+y.asText());
-                    System.out.println();
-                   }
-    	       		
-    	       		
-    	       		 
-    	       		 
-    	        } catch (Exception e) {
-    	            status = 404;
-    	        }
-    	    	//protection for memory leak
-    	     	wC.close();
+
+    // fonction constuisant l'url de la recherche a partir de la liste d'ingredient
+    // ---------return null si listIngerdient is empty
+    private String URLBuilder(ArrayList<String> ingredientRecette) {
+        String ingredientURLget = "aqt=";
+        Boolean IngredientEmpty = false;
+        if (ingredientRecette.isEmpty() == false) {
+            ingredientURLget = ingredientURLget + ingredientRecette.get(0);
+
+        } else {
+            IngredientEmpty = true;
+        }
+        for (int i = 1; i < ingredientRecette.size(); i++) {
+            ingredientURLget = ingredientURLget + "-" + ingredientRecette.get(i);
+        }
+        // String typeRecette="type=all";//Cela sera a preciser , ici on a la valeur par
+        // default
+        if (IngredientEmpty) {
+            return null;
+        } else {
+            return URLMarimitton + "?" + ingredientURLget;
+        }
+
     }
-   
-    	
-    	
-    	
-    	
-    	
-    	
-    }
-    
-  //------------------------------END PARSE ALL RESULT-----------------------------------
-   }
-   
-   //fonction constuisant l'url de la recherche a partir de la liste d'ingredient
-   //---------return null si listIngerdient is empty
-   private String URLBuilder(ArrayList<String> ingredientRecette) {
-   	String ingredientURLget="aqt=";
-   	Boolean IngredientEmpty=false;
-   	if(ingredientRecette.isEmpty()==false) {
-   		ingredientURLget=ingredientURLget+ingredientRecette.get(0);
-   		
-   	}else {
-   		IngredientEmpty=true;
-   	}
-   	for(int i=1;i<ingredientRecette.size();i++) {
-   		ingredientURLget=ingredientURLget+"-"+ingredientRecette.get(i);
-   	}
-   //	String typeRecette="type=all";//Cela sera a preciser , ici on a la valeur par default 
-   	if(IngredientEmpty) {
-   		return null;
-   	}else {
-   		return URLMarimitton+"?"+ingredientURLget;
-   	}
-   	
-   	
-   }
+
     private WebClient webClientCreator() {
-   	 WebClient webClient = new WebClient();
+        WebClient webClient = new WebClient();
         webClient.getOptions().setCssEnabled(true);
         webClient.setCssErrorHandler(new SilentCssErrorHandler());
         webClient.getOptions().setThrowExceptionOnFailingStatusCode(true);
@@ -229,5 +230,5 @@ public class GenerateRecipes {
         webClient.getOptions().setTimeout(5000);
         webClient.getOptions().setPrintContentOnFailingStatusCode(false);
         return webClient;
-   }
+    }
 }
