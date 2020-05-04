@@ -12,7 +12,7 @@ import com.gargoylesoftware.htmlunit.SilentCssErrorHandler;
 
 
 //import static org.junit.Assert.assertNotNull;
-public class GetRecipies {
+public class GetRecipes {
     public List<String> steps = new ArrayList<String>();
     public String title;
     public String temps;
@@ -26,7 +26,7 @@ public class GetRecipies {
 
     private final String URLMarimitton = "https://www.marmiton.org/recettes/recherche.aspx";
 
-    public GetRecipies(ArrayList<String> ingredientRecette) {
+    public GetRecipes(ArrayList<String> ingredientRecette) {
         String urlMarmittonRecherche = URLBuilder(ingredientRecette);
         String start = "&start=";
         String page = "&page=";
