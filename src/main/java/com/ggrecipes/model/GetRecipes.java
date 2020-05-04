@@ -10,7 +10,6 @@ import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.SilentCssErrorHandler;
 
-
 //import static org.junit.Assert.assertNotNull;
 public class GetRecipes {
     public List<String> steps = new ArrayList<String>();
@@ -26,7 +25,7 @@ public class GetRecipes {
 
     private final String URLMarimitton = "https://www.marmiton.org/recettes/recherche.aspx";
 
-    public GetRecipes(ArrayList<String> ingredientRecette) {
+    public ArrayList<Recette> GetRecipesDescription(ArrayList<String> ingredientRecette) {
         String urlMarmittonRecherche = URLBuilder(ingredientRecette);
         String start = "&start=";
         String page = "&page=";
@@ -66,6 +65,7 @@ public class GetRecipes {
 
         // ------------------------------PARSE ALL
         // RESULT-----------------------------------
+        ArrayList<Recette> recettes = new ArrayList<Recette>();
         if (boolInitialisation) {
             int requestLimit = 5;
             for (int i = 1; i < nbrsElementInt; i++) {
@@ -73,32 +73,40 @@ public class GetRecipes {
                 if (i > requestLimit) {
                     break;
                 }
-
+                
                 try {
                     String urlMarmittonRecherchePage = urlMarmittonRecherche + start + i * nbrsElementParPage + page
                             + i;
                     HtmlPage htmlMarmitton = (HtmlPage) wC.getPage(urlMarmittonRecherchePage);
                     status = htmlMarmitton.getWebResponse().getStatusCode();
 
-                    System.out.println(urlMarmittonRecherchePage);
-                    List<HtmlElement> recipies = htmlMarmitton.getByXPath("//div[(@class='recipe-card__description')]");
+                    //System.out.println(urlMarmittonRecherchePage);
+                    List<HtmlElement> description = htmlMarmitton
+                            .getByXPath("//div[(@class='recipe-card__description')]");
                     List<HtmlElement> titre = htmlMarmitton.getByXPath("//h4[(@class='recipe-card__title')]");
-                    compteurRecipiesExtract = compteurRecipiesExtract + recipies.size();
+                    compteurRecipiesExtract = compteurRecipiesExtract + description.size();
                     // on récupère le texte ici
                     // on récupère le lien de chaque recette
                     List<HtmlAnchor> liens = htmlMarmitton.getByXPath("//a[(@class='recipe-card-link')]");
-                   /* for (HtmlElement y : recipies) {
-                        System.out.println("Le Resume = ");
-                        System.out.println(y.asText());
-                        System.out.println();
-                    }*/
-                    for (int w = 0; w < recipies.size(); w++) {
-                        System.out.println(titre.get(w).asText());
-                        System.out.println(recipies.get(w).asText());
-                        System.out.println("https://www.marmiton.org" +liens.get(w).getHrefAttribute());
-                        System.out.println();
+                    /*
+                     * for (HtmlElement y : recipies) { System.out.println("Le Resume = ");
+                     * System.out.println(y.asText()); System.out.println(); }
+                     */
+                   
+                    Recette recette;
+                    for (int w = 0; w < description.size(); w++) {
+                        recette = new Recette();
+                        recette.name = titre.get(w).asText();
+                        recette.description = description.get(w).asText();
+                        recette.MarmittonURL = "https://www.marmiton.org" + liens.get(w).getHrefAttribute();
+                        /*
+                         * System.out.println(titre.get(w).asText());
+                         * System.out.println(description.get(w).asText());
+                         * System.out.println("https://www.marmiton.org"
+                         * +liens.get(w).getHrefAttribute()); System.out.println();
+                         */
+                        recettes.add(recette);
                     }
-
                 } catch (Exception e) {
                     status = 404;
                 }
@@ -110,6 +118,7 @@ public class GetRecipes {
 
         // ------------------------------END PARSE ALL
         // RESULT-----------------------------------
+        return recettes;
     }
 
     // fonction constuisant l'url de la recherche a partir de la liste d'ingredient
