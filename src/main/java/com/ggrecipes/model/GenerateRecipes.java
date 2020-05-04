@@ -170,13 +170,14 @@ public class GenerateRecipes {
                     compteurRecipiesExtract = compteurRecipiesExtract + recipies.size();
                     // on récupère le texte ici
                     for (HtmlElement y : recipies) {
-                        System.out.println("LETEXTE= " + y.asText());
+                        System.out.println("Le Resume = " );
+                        System.out.println(y.asText());
                         System.out.println();
                     }
                     // on récupère le lien de chaque recette
                     List<HtmlAnchor> liens = htmlMarmitton.getByXPath("//a[(@class='recipe-card-link')]");
                     for (HtmlAnchor y : liens) {
-                        System.out.println("Lelien= " + y.getHrefAttribute());
+                        System.out.println("Le lien = https://www.marmiton.org" + y.getHrefAttribute());
                         System.out.println();
                     }
 
